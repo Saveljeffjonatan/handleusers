@@ -1,5 +1,6 @@
-const regForm = document.querySelector('#regForm');
 const email = document.querySelector('#email');
+const card = document.querySelector('#card')
+const memberCard = document.querySelector('#memberCard')
 const inputs = document.querySelectorAll('input');
 
 
@@ -17,6 +18,16 @@ const validate = (id) => {
     input.classList.remove('is-invalid');
     input.classList.add('is-valid');
     return true;
+  }
+}
+
+const showHide = () => {
+  if(memberCard.classList.contains('collapse')) {
+    card.classList.toggle('collapse')
+    memberCard.classList.toggle('collapse')
+  } else {
+    card.classList.toggle('collapse')
+    memberCard.classList.toggle('collapse')
   }
 }
 
@@ -47,8 +58,6 @@ inputs.forEach(input => {
   })
 })
 
-
-
 regForm.addEventListener('submit', (e) => {
   e.preventDefault();
   validate('#firstName');
@@ -61,5 +70,4 @@ regForm.addEventListener('submit', (e) => {
   } else {
     console.log('nope!')
   }
-
 })

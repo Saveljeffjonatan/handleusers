@@ -8,7 +8,7 @@
   <title>Handle users</title>
 </head>
 <body>
-  <div class="card">
+  <div id="card">
     <h1>Registration</h1>
 
     <form id="regForm">
@@ -35,18 +35,17 @@
           Please enter your first name.
         </div>
       </div>
-
     </form>
 
     <div class="btn-group">
-    <button class="btn">Register</button>
-    <button class="btn">Show Members</button>
+      <button class="btn">Register</button>
+      <button class="btn" onClick="showHide()">Show Members</button>
     </div>
+
   </div>
 
-  <div class="card">
+  <div id="memberCard" class="collapse">
     <h1> Members </h1>
-
 
       <div class="form-goup col-md-6 mb-3">
         <li>Jonatan Saveljeff awda@email.com</li>
@@ -55,11 +54,8 @@
         <br>
         <li>Jonatan Saveljeff awda@email.com</li>
       </div>
-
+      <button class="btn" onClick="showHide()">Register</button>
   </div>
-
-
-
 
   <script src="App.js"></script>
 </body>

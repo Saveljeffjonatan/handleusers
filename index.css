@@ -12,10 +12,10 @@ body {
 }
 
 .collapse {
-  display: none;
+  display: none !important;
 }
 
-.card h1 {
+h1 {
   color: #6649DE;
   margin-bottom: 20px;
 }
@@ -34,7 +34,19 @@ body {
 	font-family: inherit;
 }
 
-.card {
+#card {
+	min-height: 300px;
+	max-width: 500px;
+	margin: 50px auto;
+	padding: 30px;
+	border-radius: 10px;
+	background: rgb(223, 221, 221);
+	display: flex;
+  align-items: center;
+	flex-direction: column;
+}
+
+#memberCard {
 	min-height: 300px;
 	max-width: 500px;
 	margin: 50px auto;
