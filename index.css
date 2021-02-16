@@ -26,6 +26,7 @@ h1 {
 }
 
 .btn {
+	min-width: 180px;
 	display: inline-block;
 	background-color: #A35DF5;
 	color: #fff;
@@ -38,6 +39,35 @@ h1 {
 	font-size: 15px;
 	font-family: inherit;
 }
+
+.btn-secondary {
+	min-width: 180px;
+	display: inline-block;
+	color: #000;
+	background-color:rgb(223, 221, 221);
+	border: 1px solid #A35DF5;
+	padding: 10px 20px;
+	margin: 5px 5px 5px 0px;
+	border-radius: 5px !important;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 15px;
+	font-family: inherit;
+}
+
+.btn-small {
+	display: inline-block;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	margin: 5px 5px 5px 0px;
+	border-radius: 5px !important;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 15px;
+	font-family: inherit;
+}
+
 
 #card {
 	min-height: 300px;

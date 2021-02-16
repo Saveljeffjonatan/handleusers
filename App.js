@@ -17,15 +17,15 @@ let users = [
     id: Math.floor(Math.random() * 100),
     firstName: 'Github',
     lastName: '',
-    email: 'My github',
-    // link: 'https://www.linkedin.com/in/jonatan-saveljeff-a94650109/'
+    email: '',
+    homepage: 'https://www.linkedin.com/in/jonatan-saveljeff-a94650109/'
   },
   {
     id: Math.floor(Math.random() * 100),
     firstName: 'LinkedIn',
     lastName: '',
-    email: 'My linkedin',
-    // link: 'https://www.linkedin.com/in/jonatan-saveljeff-a94650109/'
+    email: '',
+    homepage: 'https://www.linkedin.com/in/jonatan-saveljeff-a94650109/'
   }
 ]
 
@@ -56,9 +56,9 @@ const validate = (id) => {
   }
 }
 
+//* E-mail address validation from Ian Dunn which was made as an improvement from Warren Gaebel's regex. An even better validator would be this : https://github.com/dominicsayers/isemail if used on the serverside.
 const validateEmail = (_email) => {
-
-  let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  let regEx = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
 
   if(regEx.test(_email.value)) {
     _email.classList.add('is-valid');
@@ -85,21 +85,6 @@ inputs.forEach(input => {
   })
 })
 
-// regForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   validate('#firstName');
-//   validate('#lastName');
-//   validateEmail(email);
-
-
-//   if(validateEmail(email) && validate('#firstName') && validate('#lastName')) {
-//     console.log('Success!')
-//     regForm.reset()
-//   } else {
-//     console.log('nope!')
-//   }
-// })
-
 const createUser = (firstName, lastName, email) => {
   let user = {
     id: Math.floor(Math.random() * 100),
@@ -111,18 +96,21 @@ const createUser = (firstName, lastName, email) => {
   users.push(user);
 }
 
+//* This is the template for rendering a new user.
 const renderUsers = () => {
-
   output.innerHTML = '';
 
+  //TODO: Make an if statement that chekcs user.homepage and reterns a new template.
+  //${user.homepage ? `<a href=${user.homepage}></a>` : ''}
   users.forEach(user => {
+
     let template = `
     <div class="user d-flex justify-content-between align-items-center mb-4">
       <div id=${user.id} class="text">
         <h3>${user.firstName} ${user.lastName}</h3>
         <small>${user.email}</small>
       </div>
-        <button class="btn btn-danger">X</button>
+        <button class="btn-small btn-danger">X</button>
     </div>
     `
 
@@ -140,17 +128,19 @@ const resetForm = () => {
   })
 }
 
+
+//? Validates the user input and returns a new user if validation is successful.
 regForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-  validate('#firstName');
-  validate('#lastName');
-  validateEmail(email);
+  e.preventDefault();
 
   if(validateEmail(email) && validate('#firstName') && validate('#lastName')) {
-    createUser(firstName.value, lastName.value, email.value);
-    renderUsers();
-    resetForm();
+    if(users.find(user => user.email === email.value)) {
+      //TODO: Change log to an actual message.
+      console.log("Email already exists")
+    } else {
+      createUser(firstName.value, lastName.value, email.value);
+      renderUsers();
+      resetForm();
+    }
   }
 })
-
-
