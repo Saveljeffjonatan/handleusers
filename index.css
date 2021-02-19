@@ -81,7 +81,7 @@ h1 {
 
 #memberCard {
 	min-height: 300px;
-	max-width: 500px;
+	max-width: 650px;
 	margin: 50px auto;
 	padding: 30px;
 	border-radius: 10px;
@@ -96,4 +96,9 @@ h1 {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+}
+
+#emailExists {
+	color: red;
+	padding-left: 15px;
 }

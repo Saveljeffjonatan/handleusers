@@ -18,19 +18,22 @@
         <div class="form-goup col-md-6 mb-3">
           <input type="text" id="firstName" class="form-control" placeholder="First Name">
           <div class="invalid-feedback">
-            Please enter your firstname.
+            Please enter your firstname atleast 2 characters long.
           </div>
         </div>
 
         <div class="form-goup col-md-6 mb-3">
           <input type="text" id="lastName" class="form-control" placeholder="Last Name">
           <div class="invalid-feedback">
-            Please enter your lastname.
+            Please enter your lastname atleast 2 characters long.
           </div>
         </div>
 
         <div class="form-goup col-md-12 mb-3">
           <input type="email" id="email" class="form-control" placeholder="Email">
+        </div>
+        <div id="emailExists" class="collapse mb-3">
+          This email exists already.
         </div>
         <div class="invalid-feedback">
           Please enter your email.
