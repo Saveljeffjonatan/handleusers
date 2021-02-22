@@ -79,6 +79,16 @@ h1 {
 	text-align: center;
 }
 
+#editCard {
+	min-height: 300px;
+	max-width: 500px;
+	margin: 50px auto;
+	padding: 30px;
+	border-radius: 10px;
+	background: rgb(223, 221, 221);
+	text-align: center;
+}
+
 #memberCard {
 	min-height: 300px;
 	max-width: 650px;

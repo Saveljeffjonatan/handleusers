@@ -3,6 +3,7 @@ const firstName = document.querySelector('#firstName')
 const lastName = document.querySelector('#lastName')
 const card = document.querySelector('#card')
 const memberCard = document.querySelector('#memberCard')
+const editCard = document.querySelector('#editCard')
 const inputs = document.querySelectorAll('input');
 const output = document.querySelector('#users')
 const text = document.querySelector('#emailExists')
@@ -62,6 +63,7 @@ const validate = (id) => {
 const validateEmail = (_email) => {
   let regEx = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
 
+  //* Checks if user.input email already exists, then checks the regex.
   if(users.find(user => user.email === email.value)) {
     text.classList.remove('collapse')
     _email.classList.remove('is-valid');
@@ -105,12 +107,70 @@ const createUser = (firstName, lastName, email) => {
   users.push(user);
 }
 
-// remove.addEventListener('click', e => {
-//   if(e.target.classList.contains('remove')) {
-//     user.removeChild(e.target.parentElement)
-//     user.removeChild(user)
-//   }
-// })
+const displayEditForm = (userID) => {
+  editCard.innerHTML = '';
+  let user = users.find(user => user.id === userID)
+  memberCard.classList.toggle('collapse')
+  editCard.classList.toggle('collapse')
+
+  console.log(userID)
+  let template =
+  `
+  <div id="editCard">
+    <h1>Edit user</h1>
+
+  <div class="row">
+      <div class="form-goup col-md-6 mb-3">
+        <input type="text" id="firstName" class="form-control" value="${user.firstName}" placeholder="First Name">
+        <div class="invalid-feedback">
+          Please enter your firstname atleast 2 characters long.
+        </div>
+      </div>
+
+      <div class="form-goup col-md-6 mb-3">
+        <input type="text" id="lastName" class="form-control" value="${user.lastName}" placeholder="Last Name">
+        <div class="invalid-feedback">
+          Please enter your lastname atleast 2 characters long.
+        </div>
+      </div>
+
+      <div class="form-goup col-md-12 mb-3">
+        <input type="email" id="email" class="form-control" value="${user.email}" placeholder="Please enter your email">
+      </div>
+      <div id="emailExists" class="collapse mb-3">
+        This email exists already.
+      </div>
+      <div class="invalid-feedback">
+        Please enter your email.
+      </div>
+    </div>
+    <button class="btn editUserInput" onClick="saveUser(inputs)">Save</button>
+    </div>
+    `
+
+    editCard.innerHTML = template;
+}
+
+const saveUser = (inputData) => {
+  let firstName
+  let lastName
+  let email
+
+  inputData.forEach(item => {
+    console.log(item)
+    if(item.id === "firstName"){
+      firstName = item.value
+    }
+    if(item.id === "lastName"){
+      lastName = item.value
+    }
+    if(item.id === "email"){
+      email = item.value
+    }
+  })
+  console.log(firstName, lastName, email)
+}
+
 
 
 //* This is the template for rendering a new user.
@@ -140,7 +200,6 @@ const renderUsers = () => {
         <div id=${user.id} class="text">
           <h2>${user.firstName} ${user.lastName}</h2>
           <a href="${user.homepage}" target="_blank">My Github</a>
-
         </div>
       </div>
       `
@@ -163,13 +222,13 @@ const renderUsers = () => {
     } else {
 
     let template = `
-    <div id=${user.id} class="user d-flex justify-content-between mb-4">
-      <div class="text">
+    <div class="user d-flex justify-content-between mb-4">
+      <div id=${user.id} class="text">
         <h3>${user.firstName} ${user.lastName}</h3>
         <small>${user.email}</small>
       </div>
       <div class="buttons">
-        <button class="btn-small btn-primary">Change</button>
+        <button class="btn-small btn-primary" onClick="displayEditForm(${user.id})">Change</button>
         <button class="btn-small btn-danger">X</button>
       </div>
     </div>
@@ -190,19 +249,36 @@ const resetForm = () => {
   })
 }
 
-//? Deletes the member from the user array.
-memberCard.addEventListener('click', e => {
-  if(e.target.classList.contains('btn-danger')) {
-    // console.log("button is pressed")
-    users = users.filter(user => user.id != e.target.parentNode.parentNode.id)
-    e.target.parentNode.parentNode.remove()
-  }
-  // else if () {
 
-  // }
+// memberCard.addEventListener('click', e => {
+
+//   let userID = e.target.parentNode.parentNode.id
+//   console.log(e.target.parentNode.id)
+
+//   //* Deletes the member from the user array.
+//   if(e.target.classList.contains('btn-danger')) {
+//     users = users.filter(user => user.id != userID)
+//     e.target.parentNode.parentNode.remove()
+//   }
+
+//     //* Opens a new prompt for editing a user
+// //     if(e.target.classList.contains('btn-primary')) {
+
+// //     }
+// })
+
+editCard.addEventListener('click', e => {
+    e.preventDefault
+
+    //TODO: Change so this actually edits the new user input without swaping place in the list of the user.
+  if(e.target.classList.contains('editUserInput')) {
+    editCard.classList.toggle('collapse')
+    memberCard.classList.toggle('collapse')
+
+  }
 })
 
-//? Validates the user input and returns a new user if validation is successful.
+//* Validates the user input and returns a new user if validation is successful.
 regForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
