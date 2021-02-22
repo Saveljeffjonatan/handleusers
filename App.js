@@ -107,6 +107,28 @@ const createUser = (firstName, lastName, email) => {
   users.push(user);
 }
 
+const updateUser = (userID) => {
+  const firstNameEdit = document.querySelector('#firstName-edit')
+  const lastNameEdit = document.querySelector('#lastName-edit')
+  const emailEdit = document.querySelector('#email-edit')
+    const user = users.find(user => user.id === userID)
+
+  user.firstName = firstNameEdit.value
+  user.lastName = lastNameEdit.value
+  user.email = emailEdit.value
+
+  renderUsers()
+  console.log("user", user)
+}
+
+// const deleteUser = (userID) => {
+//     let removeUser = e.target.parentNode.parentNode.remove()
+//       const users = users.filter(user => user.id != userID)
+
+//     user(removeUser)
+
+//   }
+
 const displayEditForm = (userID) => {
   editCard.innerHTML = '';
   let user = users.find(user => user.id === userID)
@@ -121,21 +143,21 @@ const displayEditForm = (userID) => {
 
   <div class="row">
       <div class="form-goup col-md-6 mb-3">
-        <input type="text" id="firstName" class="form-control" value="${user.firstName}" placeholder="First Name">
+        <input type="text" id="firstName-edit" class="form-control" value="${user.firstName}" placeholder="First Name">
         <div class="invalid-feedback">
           Please enter your firstname atleast 2 characters long.
         </div>
       </div>
 
       <div class="form-goup col-md-6 mb-3">
-        <input type="text" id="lastName" class="form-control" value="${user.lastName}" placeholder="Last Name">
+        <input type="text" id="lastName-edit" class="form-control" value="${user.lastName}" placeholder="Last Name">
         <div class="invalid-feedback">
           Please enter your lastname atleast 2 characters long.
         </div>
       </div>
 
       <div class="form-goup col-md-12 mb-3">
-        <input type="email" id="email" class="form-control" value="${user.email}" placeholder="Please enter your email">
+        <input type="email" id="email-edit" class="form-control" value="${user.email}" placeholder="Please enter your email">
       </div>
       <div id="emailExists" class="collapse mb-3">
         This email exists already.
@@ -144,34 +166,12 @@ const displayEditForm = (userID) => {
         Please enter your email.
       </div>
     </div>
-    <button class="btn editUserInput" onClick="saveUser(inputs)">Save</button>
+    <button class="btn editUserInput" onClick="updateUser(${user.id})">Save</button>
     </div>
     `
 
     editCard.innerHTML = template;
 }
-
-const saveUser = (inputData) => {
-  let firstName
-  let lastName
-  let email
-
-  inputData.forEach(item => {
-    console.log(item)
-    if(item.id === "firstName"){
-      firstName = item.value
-    }
-    if(item.id === "lastName"){
-      lastName = item.value
-    }
-    if(item.id === "email"){
-      email = item.value
-    }
-  })
-  console.log(firstName, lastName, email)
-}
-
-
 
 //* This is the template for rendering a new user.
 //! The logic of my IF statements has a flaw that if my Math.random generates the ID 2 or 3 our users will get user.homepage
@@ -250,27 +250,21 @@ const resetForm = () => {
 }
 
 
-// memberCard.addEventListener('click', e => {
+memberCard.addEventListener('click', e => {
 
-//   let userID = e.target.parentNode.parentNode.id
-//   console.log(e.target.parentNode.id)
+  let userID = e.target.parentNode.parentNode.id
 
-//   //* Deletes the member from the user array.
-//   if(e.target.classList.contains('btn-danger')) {
-//     users = users.filter(user => user.id != userID)
-//     e.target.parentNode.parentNode.remove()
-//   }
+  //* Deletes the member from the user array.
+  if(e.target.classList.contains('btn-danger')) {
+    users = users.filter(user => user.id != userID)
+    e.target.parentNode.parentNode.remove()
+  }
+})
 
-//     //* Opens a new prompt for editing a user
-// //     if(e.target.classList.contains('btn-primary')) {
-
-// //     }
-// })
-
+//* Displays the edit user card
 editCard.addEventListener('click', e => {
     e.preventDefault
 
-    //TODO: Change so this actually edits the new user input without swaping place in the list of the user.
   if(e.target.classList.contains('editUserInput')) {
     editCard.classList.toggle('collapse')
     memberCard.classList.toggle('collapse')
