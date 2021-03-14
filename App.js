@@ -8,7 +8,6 @@ const inputs = document.querySelectorAll('input');
 const output = document.querySelector('#users')
 const text = document.querySelector('#emailExists')
 
-
 let users = [
   {
     id: 1,
@@ -32,6 +31,7 @@ let users = [
   }
 ]
 
+//* Toggles between register a user and view users.
 const showHide = () => {
   if(memberCard.classList.contains('collapse')) {
     card.classList.toggle('collapse')
@@ -42,6 +42,7 @@ const showHide = () => {
   }
 }
 
+//? This function checks for a valid input then adds an css class for pass or fail.
 const validate = (id) => {
   let input = document.querySelector(id);
 
@@ -59,11 +60,11 @@ const validate = (id) => {
   }
 }
 
-//* The E-mail address validation that I use is from Ian Dunn which was made as an improvement from Warren Gaebel's regex. An even better validator would be this: https://github.com/dominicsayers/isemail if used on the serverside.
+//? The E-mail address validation that I use is from Ian Dunn which was made as an improvement from Warren Gaebel's regex. An even better validator would be this: https://github.com/dominicsayers/isemail if used on the serverside.
 const validateEmail = (_email) => {
   let regEx = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
 
-  //* Checks if user.input email already exists, then checks the regex.
+  //* Checks if our user is trying to register an existing email address then validates the email with our regex if returned
   if(users.find(user => user.email === email.value)) {
     text.classList.remove('collapse')
     _email.classList.remove('is-valid');
@@ -84,21 +85,24 @@ const validateEmail = (_email) => {
   }
 }
 
+//? This function checks what type of input is being entered and then calls for the appropriate validation function.
 inputs.forEach(input => {
   input.addEventListener('keyup', function() {
 
     let id = '#' + input.id;
-
-    if(input.type === 'text')
+    console.log('id', id)
+    if(input.type === 'text'){
       validate(id);
-    else
+    }else{
       validateEmail(input);
+    }
   })
 })
 
+//? This is the logic for creating a user (what dependencies we need)
 const createUser = (firstName, lastName, email) => {
   let user = {
-    id: Math.floor(Math.random() * 100),
+    id: users.length + 1,
     firstName,
     lastName,
     email
@@ -107,38 +111,28 @@ const createUser = (firstName, lastName, email) => {
   users.push(user);
 }
 
+//? This lets us update the firstname and lastname while only displaying the email address that corresponds to the user.
 const updateUser = (userID) => {
   const firstNameEdit = document.querySelector('#firstName-edit')
   const lastNameEdit = document.querySelector('#lastName-edit')
-  const emailEdit = document.querySelector('#email-edit')
-    const user = users.find(user => user.id === userID)
+  const user = users.find(user => user.id === userID)
 
   user.firstName = firstNameEdit.value
   user.lastName = lastNameEdit.value
-  user.email = emailEdit.value
 
-  renderUsers()
-  console.log("user", user)
+    renderUsers()
+
 }
 
-// const deleteUser = (userID) => {
-//     let removeUser = e.target.parentNode.parentNode.remove()
-//       const users = users.filter(user => user.id != userID)
-
-//     user(removeUser)
-
-//   }
-
+//* This is the template for our edit UI.
 const displayEditForm = (userID) => {
   editCard.innerHTML = '';
   let user = users.find(user => user.id === userID)
   memberCard.classList.toggle('collapse')
   editCard.classList.toggle('collapse')
 
-  console.log(userID)
   let template =
   `
-  <div id="editCard">
     <h1>Edit user</h1>
 
   <div class="row">
@@ -157,25 +151,16 @@ const displayEditForm = (userID) => {
       </div>
 
       <div class="form-goup col-md-12 mb-3">
-        <input type="email" id="email-edit" class="form-control" value="${user.email}" placeholder="Please enter your email">
-      </div>
-      <div id="emailExists" class="collapse mb-3">
-        This email exists already.
-      </div>
-      <div class="invalid-feedback">
-        Please enter your email.
+      <h2>${user.email}</h2>
       </div>
     </div>
     <button class="btn editUserInput" onClick="updateUser(${user.id})">Save</button>
-    </div>
     `
 
     editCard.innerHTML = template;
 }
 
-//* This is the template for rendering a new user.
-//! The logic of my IF statements has a flaw that if my Math.random generates the ID 2 or 3 our users will get user.homepage
-//! also but because of the small project I found that this would be a suitable solution.
+//* This is the template for rendering our user. It's made with innerHTML or more accurately as react has named it "_dangerouslySetInnerHTML".
 const renderUsers = () => {
   output.innerHTML = '';
 
@@ -222,8 +207,8 @@ const renderUsers = () => {
     } else {
 
     let template = `
-    <div class="user d-flex justify-content-between mb-4">
-      <div id=${user.id} class="text">
+    <div id=${user.id} class="user d-flex justify-content-between mb-4">
+      <div class="text">
         <h3>${user.firstName} ${user.lastName}</h3>
         <small>${user.email}</small>
       </div>
@@ -241,7 +226,7 @@ const renderUsers = () => {
 }
 renderUsers();
 
-
+//? Simple function that resets the input fields and css classes.
 const resetForm = () => {
   document.querySelectorAll('input').forEach(input => {
     input.value = '';
@@ -251,10 +236,9 @@ const resetForm = () => {
 
 
 memberCard.addEventListener('click', e => {
-
   let userID = e.target.parentNode.parentNode.id
 
-  //* Deletes the member from the user array.
+  //* Deletes the member from the users array.
   if(e.target.classList.contains('btn-danger')) {
     users = users.filter(user => user.id != userID)
     e.target.parentNode.parentNode.remove()
@@ -268,7 +252,6 @@ editCard.addEventListener('click', e => {
   if(e.target.classList.contains('editUserInput')) {
     editCard.classList.toggle('collapse')
     memberCard.classList.toggle('collapse')
-
   }
 })
 
